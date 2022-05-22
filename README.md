@@ -51,4 +51,5 @@ The source code follow the Unreal Engine official [Coding Standard](https://docs
 
 ## See also
 [Discord GameSDK Documentation](https://discord.com/developers/docs/game-sdk/sdk-starter-guide)
+
 [Unreal Engine Third Party Documentation](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/ThirdPartyLibraries/)
