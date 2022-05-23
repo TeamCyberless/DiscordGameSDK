@@ -8,7 +8,7 @@ An unofficial Unreal Engine 4 plugin that integrates Discord's GameSDK.
 ## How to install
  1. Download and copy the repository to your project `[YOUR_PROJECT_NAME]/Plugins/` folder.
  2. Download [Discord GameSDK](https://discord.com/developers/docs/game-sdk/sdk-starter-guide).
- 3. At `[YOUR_PROJECT_NAME]/Plugins/DiscordGameSDK/Source/ThirdParty/DiscordGameSDKLibrary/`, create an `Include` folder and copy contents of the `cpp/` folder to this folder from Discord GameSDK zip file.
+ 3. At `[YOUR_PROJECT_NAME]/Plugins/DiscordGameSDK/Source/ThirdParty/DiscordGameSDKLibrary/`, create an `Include` folder and copy `.h` files of the `cpp/` folder to this folder from Discord GameSDK zip file.
  4. Follow the steps below for each OS
  5. Build your UE4 project
  6. Launch the editor, and enable this plugin.
