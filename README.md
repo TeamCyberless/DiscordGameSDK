@@ -19,7 +19,7 @@ An unofficial Unreal Engine 4 plugin that integrates Discord's GameSDK.
 
 #### Mac
 - At `[YOUR_PROJECT_NAME]/Plugins/DiscordGameSDK/Source/ThirdParty/DiscordGameSDKLibrary/`, create a `Mac` folder
-- Copy `lib/x86_64/discord_game_sdk.dylib` from Discord GameSDK zip file to the `Mac` folder
+- Copy `lib/x86_64/discord_game_sdk.dylib` and `lib/x86_64/discord_game_sdk.bundle` from Discord GameSDK zip file to the `Mac` folder
 
 #### Linux
 - At `[YOUR_PROJECT_NAME]/Plugins/DiscordGameSDK/Source/ThirdParty/DiscordGameSDKLibrary/`, create a `Linux` folder
