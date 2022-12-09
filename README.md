@@ -3,7 +3,7 @@
 [![release](https://img.shields.io/github/release/TeamCyberless/DiscordGameSDK.svg)](https://github.com/TeamCyberless/DiscordGameSDK/releases)
 [![issues](https://img.shields.io/github/issues/TeamCyberless/DiscordGameSDK.svg)](https://github.com/TeamCyberless/DiscordGameSDK/issues)
 
-An unofficial Unreal Engine 5 plugin that integrates Discord's GameSDK.
+An unofficial Unreal Engine 4 plugin that integrates Discord's GameSDK.
 
 ## How to install
  1. Download and copy the repository to your project `[YOUR_PROJECT_NAME]/Plugins/` folder.
@@ -21,10 +21,10 @@ An unofficial Unreal Engine 5 plugin that integrates Discord's GameSDK.
 - At `[YOUR_PROJECT_NAME]/Plugins/DiscordGameSDK/Source/ThirdParty/DiscordGameSDKLibrary/`, create a `Mac` folder
 - Copy `lib/x86_64/discord_game_sdk.dylib` and `lib/x86_64/discord_game_sdk.bundle` from Discord GameSDK zip file to the `Mac` folder
 
-#### Linux **(Didn't tested yet)**
-~~- At `[YOUR_PROJECT_NAME]/Plugins/DiscordGameSDK/Source/ThirdParty/DiscordGameSDKLibrary/`, create a `Linux` folder~~
-~~- Inside, create another folder `x86_64-unknown-linux-gnu`~~
-~~- Copy `lib/x86_64/discord_game_sdk.so` from Discord GameSDK zip file to the `Linux/x86_64-unknown-linux-gnu` folder~~
+#### Linux
+- At `[YOUR_PROJECT_NAME]/Plugins/DiscordGameSDK/Source/ThirdParty/DiscordGameSDKLibrary/`, create a `Linux` folder
+- Inside, create another folder `x86_64-unknown-linux-gnu`
+- Copy `lib/x86_64/discord_game_sdk.so` from Discord GameSDK zip file to the `Linux/x86_64-unknown-linux-gnu` folder
 
 ## License
 Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt or copy at https://opensource.org/licenses/MIT)
