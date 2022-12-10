@@ -45,6 +45,16 @@ namespace FDiscordUserFlag
 	};
 }
 
+UENUM(BlueprintType)
+namespace FDiscordActivityJoinRequestReply
+{
+	enum Type {
+		No,
+		Yes,
+		Ignore
+	};
+}
+
 USTRUCT(BlueprintType)
 struct FDiscordUser
 {
@@ -55,6 +65,28 @@ struct FDiscordUser
 	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") FString Discriminator;
 	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") FString Avatar;
 	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") bool bIsBot;
+};
+
+USTRUCT(BlueprintType)
+struct FDiscordActivity
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString State; 
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString Details; 
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int64 StartTimestamp; 
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int64 EndTimestamp; 
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString LargeImageKey; 
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString LargeImageText; 
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString SmallImageKey; 
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString SmallImageText;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString PartyID;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int32 CurrentSize;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int32 MaxSize;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString MatchSecret;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString JoinSecret;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString SpectateSecret;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") bool Instance;
 };
 
 class DISCORDGSDK_API IDiscordInterface : IInterface

@@ -24,12 +24,10 @@ bool UDiscordUserManager::GetCurrentUser(FDiscordUser& User)
 {
 	if (GetCore())
 	{
-		UE_LOG(LogDiscord, Log, TEXT("Getting current user info..."));
 		discord::User* inUser = nullptr;
 		const discord::Result Result = GetCore()->UserManager().GetCurrentUser(inUser);
 		if (Result == discord::Result::Ok)
 		{
-			UE_LOG(LogDiscord, Log, TEXT("Successfully user info catched."));
 			User.UserID = inUser->GetId();
 			User.Username = inUser->GetUsername();
 			User.Discriminator = inUser->GetDiscriminator();

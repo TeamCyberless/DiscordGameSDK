@@ -1,6 +1,8 @@
 ﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DiscordCore.h"
+
+#include "DiscordActivityManager.h"
 #include "DiscordUserManager.h"
 #include "ThirdParty/DiscordGSDKLibrary/Include/core.h"
 
@@ -56,20 +58,6 @@ TStatId UDiscordCore::GetStatId() const
 	RETURN_QUICK_DECLARE_CYCLE_STAT(FAsyncDiscordHelperCallbackHandler, STATGROUP_ThreadPoolAsyncTasks);
 }
 
-FString UDiscordCore::GetUsername() const
-{
-	if (Core)
-	{
-		discord::User CurrentUser;
-		const discord::Result Result = Core->UserManager().GetCurrentUser(&CurrentUser);
-		if (Result == discord::Result::Ok)
-		{
-			return CurrentUser.GetUsername();
-		}
-	}
-	return "Unknown Discord User";
-}
-
 void UDiscordCore::InitializeInterfaces()
 {
 	// @TODO:: All Interfaces.
@@ -77,4 +65,8 @@ void UDiscordCore::InitializeInterfaces()
 	// UserManager Interface:
 	DiscordUserManager = NewObject<UDiscordUserManager>(this, UDiscordUserManager::StaticClass());
 	DiscordUserManager->Create(this);
+
+	// ActivityManager Interface:
+	DiscordActivityManager = NewObject<UDiscordActivityManager>(this, UDiscordActivityManager::StaticClass());
+	DiscordActivityManager->Create(this);
 }

@@ -37,11 +37,10 @@ public:
 
 	discord::Core* GetCore() const { return Core; }
 
-	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Tests")
-	FString GetUsername() const;
-
 	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Interfaces")
-	class UDiscordUserManager* GetDiscordUserManager() const { return DiscordUserManager; } 
+	class UDiscordUserManager* GetDiscordUserManager() const { return DiscordUserManager; }
+	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Interfaces")
+	class UDiscordActivityManager* GetDiscordActivityManager() const { return DiscordActivityManager; } 
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Core")
 	FDiscordLogHook OnDiscordLogHook;
@@ -50,6 +49,8 @@ private:
 	// @TODO: Discord Interfaces
 	UPROPERTY()
 	UDiscordUserManager* DiscordUserManager = nullptr;
+	UPROPERTY()
+    UDiscordActivityManager* DiscordActivityManager = nullptr;
 
 	void InitializeInterfaces();	
 	
