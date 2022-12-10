@@ -3,6 +3,7 @@
 #include "DiscordCore.h"
 
 #include "DiscordActivityManager.h"
+#include "DiscordRelationshipManager.h"
 #include "DiscordUserManager.h"
 #include "ThirdParty/DiscordGSDKLibrary/Include/core.h"
 
@@ -69,4 +70,8 @@ void UDiscordCore::InitializeInterfaces()
 	// ActivityManager Interface:
 	DiscordActivityManager = NewObject<UDiscordActivityManager>(this, UDiscordActivityManager::StaticClass());
 	DiscordActivityManager->Create(this);
+
+	// RelationshipManager Interface.
+	DiscordRelationshipManager = NewObject<UDiscordRelationshipManager>(this, UDiscordRelationshipManager::StaticClass());
+	DiscordRelationshipManager->Create(this);
 }

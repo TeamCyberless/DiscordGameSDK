@@ -16,6 +16,10 @@ namespace discord
 	class Core;
 }
 
+class UDiscordUserManager;
+class UDiscordActivityManager;
+class UDiscordRelationshipManager;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDiscordLogHook, TEnumAsByte<FDiscordLogLevel::Type>, inLogLevel, const FString&, inText);
 
 /**
@@ -38,9 +42,11 @@ public:
 	discord::Core* GetCore() const { return Core; }
 
 	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Interfaces")
-	class UDiscordUserManager* GetDiscordUserManager() const { return DiscordUserManager; }
+	UDiscordUserManager* GetDiscordUserManager() const { return DiscordUserManager; }
 	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Interfaces")
-	class UDiscordActivityManager* GetDiscordActivityManager() const { return DiscordActivityManager; } 
+	UDiscordActivityManager* GetDiscordActivityManager() const { return DiscordActivityManager; }
+	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Interfaces")
+	UDiscordRelationshipManager* GetDiscordRelationshipManager() const { return DiscordRelationshipManager; } 
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Core")
 	FDiscordLogHook OnDiscordLogHook;
@@ -51,6 +57,8 @@ private:
 	UDiscordUserManager* DiscordUserManager = nullptr;
 	UPROPERTY()
     UDiscordActivityManager* DiscordActivityManager = nullptr;
+	UPROPERTY()
+	UDiscordRelationshipManager* DiscordRelationshipManager = nullptr;
 
 	void InitializeInterfaces();	
 	

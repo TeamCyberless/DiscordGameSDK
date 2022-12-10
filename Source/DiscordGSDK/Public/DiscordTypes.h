@@ -55,6 +55,30 @@ namespace FDiscordActivityJoinRequestReply
 	};
 }
 
+UENUM(BlueprintType)
+namespace FDiscordRelationshipType
+{
+	enum Type {
+		None,
+		Friend,
+		Blocked,
+		PendingIncoming,
+		PendingOutgoing,
+		Implicit,
+	};
+}
+
+UENUM(BlueprintType)
+namespace FDiscordStatus
+{
+	enum Type {
+		Offline = 0,
+		Online = 1,
+		Idle = 2,
+		DoNotDisturb = 3,
+	};
+}
+
 USTRUCT(BlueprintType)
 struct FDiscordUser
 {
@@ -87,6 +111,17 @@ struct FDiscordActivity
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString JoinSecret;
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString SpectateSecret;
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") bool Instance;
+};
+
+USTRUCT(BlueprintType)
+struct FDiscordRelationship
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") TEnumAsByte<FDiscordRelationshipType::Type> RelationshipType;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") FDiscordUser User;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") TEnumAsByte<FDiscordStatus::Type> Status;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") FDiscordActivity Activity;
 };
 
 class DISCORDGSDK_API IDiscordInterface : IInterface
