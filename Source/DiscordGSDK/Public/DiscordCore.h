@@ -27,20 +27,32 @@ class DISCORDGSDK_API UDiscordCore : public UObject, public FTickableGameObject
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category = "Discord|Core")
-	TEnumAsByte<FDiscordResult::Type> Create(int64 ClientID, bool bIsDiscordRequired);
+	bool Create(int64 ClientID, bool bIsDiscordRequired);
 
 	virtual void BeginDestroy() override;
 
 	virtual void Tick(float DeltaTime) override;
 	virtual bool IsTickable() const override;
 	virtual TStatId GetStatId() const override;
+
+	discord::Core* GetCore() const { return Core; }
+
+	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Tests")
+	FString GetUsername() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Interfaces")
+	class UDiscordUserManager* GetDiscordUserManager() const { return DiscordUserManager; } 
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Core")
 	FDiscordLogHook OnDiscordLogHook;
 
-	// @TODO: Discord Interfaces
-	
 private:
+	// @TODO: Discord Interfaces
+	UPROPERTY()
+	UDiscordUserManager* DiscordUserManager = nullptr;
+
+	void InitializeInterfaces();	
+	
 	discord::Core* Core = nullptr;
 };
 

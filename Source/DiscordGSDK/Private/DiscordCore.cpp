@@ -1,29 +1,33 @@
 ﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DiscordCore.h"
+#include "DiscordUserManager.h"
 #include "ThirdParty/DiscordGSDKLibrary/Include/core.h"
 
-TEnumAsByte<FDiscordResult::Type> UDiscordCore::Create(int64 ClientID, bool bIsDiscordRequired)
+bool UDiscordCore::Create(int64 ClientID, bool bIsDiscordRequired)
 {
 	UE_LOG(LogDiscord, Log, TEXT("Trying to create Discord Core..."));
 
-	const FDiscordResult::Type Result = static_cast<FDiscordResult::Type>(discord::Core::Create(ClientID, bIsDiscordRequired ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &Core));
+	const discord::Result Result = discord::Core::Create(ClientID, bIsDiscordRequired ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &Core);
 
-	if (Result == FDiscordResult::Ok && Core != nullptr)
+	if (Result == discord::Result::Ok && Core != nullptr)
 	{
+		UE_LOG(LogDiscord, Log, TEXT("Discord Core was successfully created."));
 		auto LogHook = [=](discord::LogLevel inMinLevel, const char* inLogText)
 		{
 			OnDiscordLogHook.Broadcast(static_cast<FDiscordLogLevel::Type>(inMinLevel), UTF8_TO_TCHAR(inLogText));
 		};
 	
 		Core->SetLogHook(discord::LogLevel::Debug, LogHook);
+
+		InitializeInterfaces();
 	}
 	else
 	{
 		UE_LOG(LogDiscord, Error, TEXT("Failed to create Discord Core."));
 	}
-
-	return Result;
+	
+	return Result == discord::Result::Ok;
 }
 
 void UDiscordCore::BeginDestroy()
@@ -50,4 +54,27 @@ bool UDiscordCore::IsTickable() const
 TStatId UDiscordCore::GetStatId() const
 {
 	RETURN_QUICK_DECLARE_CYCLE_STAT(FAsyncDiscordHelperCallbackHandler, STATGROUP_ThreadPoolAsyncTasks);
+}
+
+FString UDiscordCore::GetUsername() const
+{
+	if (Core)
+	{
+		discord::User CurrentUser;
+		const discord::Result Result = Core->UserManager().GetCurrentUser(&CurrentUser);
+		if (Result == discord::Result::Ok)
+		{
+			return CurrentUser.GetUsername();
+		}
+	}
+	return "Unknown Discord User";
+}
+
+void UDiscordCore::InitializeInterfaces()
+{
+	// @TODO:: All Interfaces.
+
+	// UserManager Interface:
+	DiscordUserManager = NewObject<UDiscordUserManager>(this, UDiscordUserManager::StaticClass());
+	DiscordUserManager->Create(this);
 }
