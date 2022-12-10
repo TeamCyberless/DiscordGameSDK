@@ -3,7 +3,7 @@
 [![release](https://img.shields.io/github/release/TeamCyberless/DiscordGameSDK.svg)](https://github.com/TeamCyberless/DiscordGameSDK/releases)
 [![issues](https://img.shields.io/github/issues/TeamCyberless/DiscordGameSDK.svg)](https://github.com/TeamCyberless/DiscordGameSDK/issues)
 
-An unofficial Unreal Engine 4 plugin that integrates Discord's GameSDK.
+An unofficial Unreal Engine 5 plugin that integrates Discord's GameSDK.
 
 ## How to install
  1. Download and copy the repository to your project `[YOUR_PROJECT_NAME]/Plugins/` folder.
