@@ -44,7 +44,7 @@ bool UDiscordUserManager::GetCurrentUser(FDiscordUser& User)
 	return false;
 }
 
-void UDiscordUserManager::GetUser(int64 UserID, FDiscordGetUserResult Callback)
+void UDiscordUserManager::GetUser(int64 UserID)
 {
 	if (GetCore())
 	{
@@ -58,12 +58,12 @@ void UDiscordUserManager::GetUser(int64 UserID, FDiscordGetUserResult Callback)
 				inUser.Discriminator = User.GetDiscriminator();
 				inUser.Avatar = User.GetAvatar();
 
-				Callback.ExecuteIfBound(true, inUser);
+				OnGetUserResult.Broadcast(true, inUser);
 			}
 			else
 			{
 				LOG_ERROR(Result);
-				Callback.ExecuteIfBound(false, FDiscordUser());
+				OnGetUserResult.Broadcast(false, FDiscordUser());
 			}
 		};
 		

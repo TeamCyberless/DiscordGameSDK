@@ -14,7 +14,7 @@ namespace discord
 }
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDiscordCurrentUserUpdate);
-DECLARE_DYNAMIC_DELEGATE_TwoParams(FDiscordGetUserResult, bool, bResult, const FDiscordUser&, User);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FDiscordGetUserResult, bool, bResult, const FDiscordUser&, User);
 
 /**
  * 
@@ -30,7 +30,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Discord|User")
 	bool GetCurrentUser(FDiscordUser& User);
 	UFUNCTION(BlueprintCallable, Category = "Discord|User")
-	void GetUser(int64 UserID, FDiscordGetUserResult Callback);
+	void GetUser(int64 UserID);
 	UFUNCTION(BlueprintCallable, Category = "Discord|User")
 	bool GetCurrentUserPremiumType(TEnumAsByte<FDiscordPremiumType::Type>& PremiumType);
 	UFUNCTION(BlueprintCallable, Category = "Discord|User")
@@ -38,4 +38,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Discord|User")
 	FDiscordCurrentUserUpdate OnCurrentUserUpdate;
+	UPROPERTY(BlueprintAssignable, Category = "Discord|User")
+	FDiscordGetUserResult OnGetUserResult;
 };

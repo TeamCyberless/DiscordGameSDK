@@ -10,15 +10,22 @@ namespace discord
 }
 
 UENUM(BlueprintType)
+enum class DISCORD_OUT_EXEC : uint8
+{
+	OnSuccess,
+	OnFail
+};
+
+UENUM(BlueprintType)
 namespace FDiscordLogLevel
 {
 	enum Type
 	{
-		DDL_None = 0,
-		DDL_Error = 1,
-		DDL_Warn,
-		DDL_Info,
-		DDL_Debug
+		DDL_None = 0 UMETA(DisplayName = "None"),
+		DDL_Error = 1 UMETA(DisplayName = "Error"),
+		DDL_Warn UMETA(DisplayName = "Warning"),
+		DDL_Info UMETA(DisplayName = "Info"),
+		DDL_Debug UMETA(DisplayName = "Debug")
 	};
 }
 

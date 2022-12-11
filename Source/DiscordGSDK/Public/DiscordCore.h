@@ -31,14 +31,22 @@ class DISCORDGSDK_API UDiscordCore : public UObject, public FTickableGameObject
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category = "Discord|Core")
-	bool Create(int64 ClientID, bool bIsDiscordRequired);
+	static UDiscordCore* Get(UWorld* World);
 
+	// Begin overrides
+	virtual void BeginPlay();
+	virtual void PostInitProperties() override;
 	virtual void BeginDestroy() override;
+	virtual UWorld* GetWorld() const override;
+	// End overrides
 
+	// Begin Tick overrides
 	virtual void Tick(float DeltaTime) override;
 	virtual bool IsTickable() const override;
 	virtual TStatId GetStatId() const override;
+	// End Tick overrides
 
+	// Begin mutators
 	discord::Core* GetCore() const { return Core; }
 
 	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Interfaces")
@@ -47,21 +55,25 @@ public:
 	UDiscordActivityManager* GetDiscordActivityManager() const { return DiscordActivityManager; }
 	UFUNCTION(BlueprintCallable, Category = "Discord|Core|Interfaces")
 	UDiscordRelationshipManager* GetDiscordRelationshipManager() const { return DiscordRelationshipManager; } 
+	// End mutators
 	
 	UPROPERTY(BlueprintAssignable, Category = "Discord|Core")
 	FDiscordLogHook OnDiscordLogHook;
 
-private:
+private: // Variables
 	// @TODO: Discord Interfaces
 	UPROPERTY()
 	UDiscordUserManager* DiscordUserManager = nullptr;
 	UPROPERTY()
-    UDiscordActivityManager* DiscordActivityManager = nullptr;
+	UDiscordActivityManager* DiscordActivityManager = nullptr;
 	UPROPERTY()
 	UDiscordRelationshipManager* DiscordRelationshipManager = nullptr;
-
-	void InitializeInterfaces();	
 	
 	discord::Core* Core = nullptr;
+
+	int ReconnectCount = 0;
+
+private: // Private functions
+	void InitializeInterfaces();
 };
 
