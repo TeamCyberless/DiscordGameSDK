@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
+
+#pragma once
 
 #include "CoreMinimal.h"
 #include "types.h"
@@ -10,15 +12,22 @@ namespace discord
 }
 
 UENUM(BlueprintType)
+enum class DISCORD_OUT_EXEC : uint8
+{
+	OnSuccess,
+	OnFail
+};
+
+UENUM(BlueprintType)
 namespace FDiscordLogLevel
 {
 	enum Type
 	{
-		DDL_None = 0,
-		DDL_Error = 1,
-		DDL_Warn,
-		DDL_Info,
-		DDL_Debug
+		DDL_None = 0 UMETA(DisplayName = "None"),
+		DDL_Error = 1 UMETA(DisplayName = "Error"),
+		DDL_Warn UMETA(DisplayName = "Warning"),
+		DDL_Info UMETA(DisplayName = "Info"),
+		DDL_Debug UMETA(DisplayName = "Debug")
 	};
 }
 
@@ -84,11 +93,11 @@ struct FDiscordUser
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") int64 UserID;
+	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") int64 UserID = 0;
 	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") FString Username;
 	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") FString Discriminator;
 	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") FString Avatar;
-	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") bool bIsBot;
+	UPROPERTY(BlueprintReadOnly, Category = "Discord|User") bool bIsBot = false;
 };
 
 USTRUCT(BlueprintType)
@@ -98,19 +107,19 @@ struct FDiscordActivity
 
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString State; 
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString Details; 
-	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int64 StartTimestamp; 
-	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int64 EndTimestamp; 
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int64 StartTimestamp = 0; 
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int64 EndTimestamp = 0; 
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString LargeImageKey; 
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString LargeImageText; 
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString SmallImageKey; 
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString SmallImageText;
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString PartyID;
-	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int32 CurrentSize;
-	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int32 MaxSize;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int32 CurrentSize = 1;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") int32 MaxSize = 1;
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString MatchSecret;
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString JoinSecret;
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") FString SpectateSecret;
-	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") bool Instance;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Activity") bool Instance = false;
 };
 
 USTRUCT(BlueprintType)
@@ -118,9 +127,9 @@ struct FDiscordRelationship
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") TEnumAsByte<FDiscordRelationshipType::Type> RelationshipType;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") TEnumAsByte<FDiscordRelationshipType::Type> RelationshipType = FDiscordRelationshipType::None;
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") FDiscordUser User;
-	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") TEnumAsByte<FDiscordStatus::Type> Status;
+	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") TEnumAsByte<FDiscordStatus::Type> Status = FDiscordStatus::Offline;
 	UPROPERTY(BlueprintReadWrite, Category = "Discord|Relationship") FDiscordActivity Activity;
 };
 

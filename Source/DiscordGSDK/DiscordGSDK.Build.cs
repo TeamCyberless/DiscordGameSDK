@@ -21,7 +21,8 @@ public class DiscordGSDK : ModuleRules
 			new string[]
 			{
 				"Core",
-				"DiscordGSDKLibrary"
+				"DiscordGSDKLibrary",
+				"DeveloperSettings"
 			}
 			);
 			

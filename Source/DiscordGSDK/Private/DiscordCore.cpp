@@ -1,36 +1,67 @@
 ﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DiscordCore.h"
-
 #include "DiscordActivityManager.h"
+#include "DiscordPluginSettings.h"
 #include "DiscordRelationshipManager.h"
 #include "DiscordUserManager.h"
 #include "ThirdParty/DiscordGSDKLibrary/Include/core.h"
 
-bool UDiscordCore::Create(int64 ClientID, bool bIsDiscordRequired)
+void UDiscordCore::BeginPlay()
 {
-	UE_LOG(LogDiscord, Log, TEXT("Trying to create Discord Core..."));
+	if (ReconnectCount <= 0)
+	{
+		UE_LOG(LogDiscord, Log, TEXT("Trying to connect with Discord..."));
+	}
 
-	const discord::Result Result = discord::Core::Create(ClientID, bIsDiscordRequired ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &Core);
+	const UDiscordPluginSettings* DiscordPluginSettings = GetDefault<UDiscordPluginSettings>();
+#if PLATFORM_DESKTOP
+	const discord::Result Result = discord::Core::Create(DiscordPluginSettings->ClientID, DiscordCreateFlags_Default, &Core);
+#elif
+	const discord::Result Result = discord::Core::Create(DiscordPluginSettings->ClientID, DiscordCreateFlags_NoRequireDiscord, &Core);
+#endif
 
 	if (Result == discord::Result::Ok && Core != nullptr)
 	{
-		UE_LOG(LogDiscord, Log, TEXT("Discord Core was successfully created."));
+		UE_LOG(LogDiscord, Log, TEXT("Successfully connected with Discord."));
 		auto LogHook = [=](discord::LogLevel inMinLevel, const char* inLogText)
 		{
 			OnDiscordLogHook.Broadcast(static_cast<FDiscordLogLevel::Type>(inMinLevel), UTF8_TO_TCHAR(inLogText));
 		};
 	
-		Core->SetLogHook(discord::LogLevel::Debug, LogHook);
+		Core->SetLogHook(discord::LogLevel::Info, LogHook);
 
 		InitializeInterfaces();
+			
+		Core->ActivityManager().RegisterSteam(DiscordPluginSettings->SteamAppID);
 	}
 	else
 	{
-		UE_LOG(LogDiscord, Error, TEXT("Failed to create Discord Core."));
+		// This should be bad. Try to reconnect with Discord if we haven't exceeded out limit.
+		if (ReconnectCount < DiscordPluginSettings->ReconnectLimit)
+		{
+			ReconnectCount++;
+				
+			FTimerHandle UnusedHandle;
+			GetWorld()->GetTimerManager().SetTimer(UnusedHandle, this, &UDiscordCore::BeginPlay, 1, false);
+		}
+		else
+		{
+			UE_LOG(LogDiscord, Error, TEXT("Failed to connect with Discord."));
+
+			MarkAsGarbage();
+		}
 	}
-	
-	return Result == discord::Result::Ok;
+}
+
+void UDiscordCore::PostInitProperties()
+{
+	UObject::PostInitProperties();
+
+	if (GetWorld())
+	{
+		BeginPlay();
+	}
 }
 
 void UDiscordCore::BeginDestroy()
@@ -42,6 +73,20 @@ void UDiscordCore::BeginDestroy()
 		delete Core;
 		Core = nullptr;
 	}
+}
+
+UWorld* UDiscordCore::GetWorld() const
+{
+	// Return pointer to World from object owner, if we don’t work in editor
+	if (GIsEditor && !GIsPlayInEditorWorld)
+	{
+		return nullptr;
+	}
+	if (GetOuter())
+	{
+		return GetOuter()->GetWorld();
+	}
+	return nullptr;
 }
 
 void UDiscordCore::Tick(float DeltaTime)
