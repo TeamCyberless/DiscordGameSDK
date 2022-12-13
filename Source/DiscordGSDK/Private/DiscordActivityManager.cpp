@@ -121,7 +121,7 @@ void UDiscordActivityManager::UpdateActivity(FDiscordActivity NewActivity)
 	{
 		auto activity = discord::Activity();
 		activity.SetState(TCHAR_TO_UTF8(*NewActivity.State));
-		activity.SetDetails(TCHAR_TO_UTF8(*NewActivity.State));
+		activity.SetDetails(TCHAR_TO_UTF8(*NewActivity.Details));
 		activity.GetTimestamps().SetStart(NewActivity.StartTimestamp);
 		activity.GetTimestamps().SetEnd(NewActivity.EndTimestamp);
 		activity.GetAssets().SetLargeImage(TCHAR_TO_UTF8(*NewActivity.LargeImageKey));
