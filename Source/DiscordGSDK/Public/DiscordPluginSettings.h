@@ -23,8 +23,8 @@ public:
 	virtual FName GetCategoryName() const { return FName("Plugins"); }
 	virtual FName GetSectionName() const { return FName("DiscordGameSDK"); }
 
-	virtual FText GetSectionText() const override;
-	virtual FText GetSectionDescription() const override;
+	virtual FText GetSectionText() const;
+	virtual FText GetSectionDescription() const;
 	
 	/** This can be obtained from Discord Developer Portal. */
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General")
