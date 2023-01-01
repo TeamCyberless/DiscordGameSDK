@@ -141,6 +141,11 @@ public:
 		Core = InCore;
 	}
 
+	virtual bool IsValid() const
+	{
+		return Core != nullptr;
+	}
+
 	virtual discord::Core* GetCore() const;
 
 protected:
