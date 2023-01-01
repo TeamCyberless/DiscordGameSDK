@@ -7,7 +7,7 @@
 #include "DiscordUserManager.h"
 #include "ThirdParty/DiscordGSDKLibrary/Include/core.h"
 
-void UDiscordCore::BeginPlay()
+void UDiscordCore::Initialize(const bool& bIsDiscordRequired)
 {
 	if (ReconnectCount <= 0)
 	{
@@ -16,7 +16,7 @@ void UDiscordCore::BeginPlay()
 
 	const UDiscordPluginSettings* DiscordPluginSettings = GetDefault<UDiscordPluginSettings>();
 #if PLATFORM_DESKTOP
-	const discord::Result Result = discord::Core::Create(DiscordPluginSettings->ClientID, DiscordCreateFlags_Default, &Core);
+	const discord::Result Result = discord::Core::Create(DiscordPluginSettings->ClientID, bIsDiscordRequired ? DiscordCreateFlags_Default : DiscordCreateFlags_NoRequireDiscord, &Core);
 #elif
 	const discord::Result Result = discord::Core::Create(DiscordPluginSettings->ClientID, DiscordCreateFlags_NoRequireDiscord, &Core);
 #endif
@@ -54,16 +54,6 @@ void UDiscordCore::BeginPlay()
 	}
 }
 
-void UDiscordCore::PostInitProperties()
-{
-	UObject::PostInitProperties();
-
-	if (GetWorld())
-	{
-		BeginPlay();
-	}
-}
-
 void UDiscordCore::BeginDestroy()
 {
 	Super::BeginDestroy();
@@ -73,20 +63,6 @@ void UDiscordCore::BeginDestroy()
 		delete Core;
 		Core = nullptr;
 	}
-}
-
-UWorld* UDiscordCore::GetWorld() const
-{
-	// Return pointer to World from object owner, if we don’t work in editor
-	if (GIsEditor && !GIsPlayInEditorWorld)
-	{
-		return nullptr;
-	}
-	if (GetOuter())
-	{
-		return GetOuter()->GetWorld();
-	}
-	return nullptr;
 }
 
 void UDiscordCore::Tick(float DeltaTime)

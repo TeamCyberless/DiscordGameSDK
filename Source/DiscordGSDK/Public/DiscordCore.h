@@ -30,12 +30,9 @@ class DISCORDGSDK_API UDiscordCore : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
 public:
-	// Begin overrides
-	virtual void BeginPlay();
-	virtual void PostInitProperties() override;
+	virtual void Initialize(const bool& bIsDiscordRequired);
+	
 	virtual void BeginDestroy() override;
-	virtual UWorld* GetWorld() const override;
-	// End overrides
 
 	// Begin Tick overrides
 	virtual void Tick(float DeltaTime) override;
