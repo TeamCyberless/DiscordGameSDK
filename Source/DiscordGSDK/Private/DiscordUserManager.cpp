@@ -2,7 +2,9 @@
 
 #include "DiscordUserManager.h"
 #include "DiscordCore.h"
-#include "ThirdParty/DiscordGSDKLibrary/Include/core.h"
+#if DISCORD_GAMESDK_DYNAMIC_LIB
+#include "DiscordGSDK/ThirdParty/Discord/core.h"
+#endif
 
 #define LOG_ERROR( Result ) \
 	UE_LOG(LogDiscord, Error, TEXT("%s Failed! Error Code: %d"), *FString(__FUNCTION__), static_cast<int32>(Result))
@@ -10,7 +12,8 @@
 void UDiscordUserManager::Create(UDiscordCore* InCore)
 {
 	IDiscordInterface::Create(InCore);
-	
+
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	discord::Event<> OnUserConnectedEvent;
 	auto UserConnectionHandler = [&]()
 	{
@@ -18,12 +21,14 @@ void UDiscordUserManager::Create(UDiscordCore* InCore)
 	};
 	OnUserConnectedEvent.Connect(UserConnectionHandler);
 	GetCore()->UserManager().OnCurrentUserUpdate = OnUserConnectedEvent;
+#endif
 }
 
 bool UDiscordUserManager::GetCurrentUser(FDiscordUser& User)
 {
 	if (GetCore())
 	{
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 		discord::User* inUser = nullptr;
 		const discord::Result Result = GetCore()->UserManager().GetCurrentUser(inUser);
 		if (Result == discord::Result::Ok)
@@ -39,6 +44,7 @@ bool UDiscordUserManager::GetCurrentUser(FDiscordUser& User)
 		}
 
 		return Result == discord::Result::Ok;
+#endif
 	}
 
 	return false;
@@ -48,6 +54,7 @@ void UDiscordUserManager::GetUser(int64 UserID)
 {
 	if (GetCore())
 	{
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 		auto GetUserCallback = [&](discord::Result Result, discord::User User)
 		{
 			if (Result == discord::Result::Ok)
@@ -68,6 +75,7 @@ void UDiscordUserManager::GetUser(int64 UserID)
 		};
 		
 		GetCore()->UserManager().GetUser(UserID, GetUserCallback);
+#endif
 	}
 }
 
@@ -76,6 +84,7 @@ bool UDiscordUserManager::GetCurrentUserPremiumType(
 {
 	if (GetCore())
 	{
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 		discord::PremiumType inPremiumType;
 		const discord::Result Result = GetCore()->UserManager().GetCurrentUserPremiumType(&inPremiumType);
 		if (Result == discord::Result::Ok)
@@ -87,6 +96,7 @@ bool UDiscordUserManager::GetCurrentUserPremiumType(
 		{
 			LOG_ERROR(Result);
 		}
+#endif
 	}
 
 	PremiumType = FDiscordPremiumType::None;
@@ -103,6 +113,7 @@ bool UDiscordUserManager::CurrentUserHasFlag(const TEnumAsByte<FDiscordUserFlag:
 	
 	if (GetCore())
 	{
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 		bool Returnable;
 		const discord::Result Result = GetCore()->UserManager().CurrentUserHasFlag(static_cast<discord::UserFlag>(Flag.GetValue()), &Returnable);
 		if (Result == discord::Result::Ok)
@@ -113,6 +124,7 @@ bool UDiscordUserManager::CurrentUserHasFlag(const TEnumAsByte<FDiscordUserFlag:
 		{
 			LOG_ERROR(Result);
 		}
+#endif
 	}
 
 	return false;

@@ -30,7 +30,7 @@ class DISCORDGSDK_API UDiscordCore : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
 public:
-	virtual void Initialize(const bool& bIsDiscordRequired);
+	virtual void Initialize(bool bIsDiscordRequired);
 	
 	virtual void BeginDestroy() override;
 

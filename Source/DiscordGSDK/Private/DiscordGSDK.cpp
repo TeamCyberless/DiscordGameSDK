@@ -6,10 +6,6 @@
 #include "Misc/MessageDialog.h"
 #include "Misc/Paths.h"
 #include "Modules/ModuleManager.h"
-#include "ISettingsModule.h"
-#include "ISettingsSection.h"
-#include "ISettingsContainer.h"
-#include "DiscordPluginSettings.h"
 
 #define LOCTEXT_NAMESPACE "FDiscordGSDKModule"
 
@@ -39,30 +35,6 @@ void FDiscordGSDKModule::StartupModule()
 #endif
 #endif
 #endif
-
-	if (ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
-	{
-		// Create the new category
-		ISettingsContainerPtr SettingsContainer = SettingsModule->GetContainer("Project");
-
-		SettingsContainer->DescribeCategory("DiscordGameSDK",
-			LOCTEXT("RuntimeWDCategoryName", "DiscordGameSDK"),
-			LOCTEXT("RuntimeWDCategoryDescription", "Configuration for the DiscordGameSDK plugin"));
-
-		// Register the settings
-		ISettingsSectionPtr SettingsSection = SettingsModule->RegisterSettings("Project", "DiscordGameSDK", "General",
-			LOCTEXT("RuntimeGeneralSettingsName", "General"),
-			LOCTEXT("RuntimeGeneralSettingsDescription", "Base configuration for DiscordGameSDK plugin"),
-			GetMutableDefault<UDiscordPluginSettings>()
-			);
-
-		// Register the save handler to your settings, you might want to use it to
-		// validate those or just act to settings changes.
-		if (SettingsSection.IsValid())
-		{
-			SettingsSection->OnModified().BindRaw(this, &FDiscordGSDKModule::HandleSettingsSaved);
-		}
-	}
 }
 
 void FDiscordGSDKModule::ShutdownModule()
@@ -73,11 +45,6 @@ void FDiscordGSDKModule::ShutdownModule()
 	FreeDependency(DiscordGSDKLibraryHandle);
 #endif
 #endif
-
-	if (ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
-	{
-		SettingsModule->UnregisterSettings("Project", "DiscordGameSDK", "General");
-	}
 }
 
 bool FDiscordGSDKModule::LoadDependency(const FString& Dir, const FString& Name, void*& Handle)
@@ -99,14 +66,6 @@ void FDiscordGSDKModule::FreeDependency(void*& Handle)
 		FPlatformProcess::FreeDllHandle(Handle);
 		Handle = nullptr;
 	}
-}
-
-bool FDiscordGSDKModule::HandleSettingsSaved()
-{
-	UDiscordPluginSettings* Settings = GetMutableDefault<UDiscordPluginSettings>();
-	Settings->SaveConfig();
-
-	return true;
 }
 
 #undef LOCTEXT_NAMESPACE

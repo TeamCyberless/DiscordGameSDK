@@ -2,7 +2,10 @@
 
 #include "DiscordActivityManager.h"
 #include "DiscordCore.h"
-#include "ThirdParty/DiscordGSDKLibrary/Include/core.h"
+
+#if DISCORD_GAMESDK_DYNAMIC_LIB
+#include "DiscordGSDK/ThirdParty/Discord/core.h"
+#endif
 
 #define LOG_ERROR( Result ) \
 	UE_LOG(LogDiscord, Error, TEXT("%s Failed! Error Code: %d"), *FString(__FUNCTION__), static_cast<int32>(Result))
@@ -11,6 +14,7 @@ void UDiscordActivityManager::Create(UDiscordCore* InCore)
 {
 	IDiscordInterface::Create(InCore);
 
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	{
 		discord::Event<char const*> OnActivityJoinEvent;
 		auto ActivityJoinHandler = [&](char const* JoinSecret)
@@ -79,10 +83,12 @@ void UDiscordActivityManager::Create(UDiscordCore* InCore)
 		OnActivityInviteEvent.Connect(ActivityInviteHandler);
 		GetCore()->ActivityManager().OnActivityInvite = OnActivityInviteEvent;
 	}
+#endif
 }
 
 bool UDiscordActivityManager::RegisterCommand(const FString& Command)
 {
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (GetCore())
 	{
 		const discord::Result Result = GetCore()->ActivityManager().RegisterCommand(TCHAR_TO_UTF8(*Command));
@@ -94,12 +100,14 @@ bool UDiscordActivityManager::RegisterCommand(const FString& Command)
 		
 		return Result == discord::Result::Ok;
 	}
+#endif
 
 	return false;
 }
 
 bool UDiscordActivityManager::RegisterSteam(int32 SteamAppID)
 {
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (GetCore())
 	{
 		const discord::Result Result = GetCore()->ActivityManager().RegisterSteam(SteamAppID);
@@ -111,12 +119,14 @@ bool UDiscordActivityManager::RegisterSteam(int32 SteamAppID)
 		
 		return Result == discord::Result::Ok;
 	}
+#endif
 
 	return false;
 }
 
 void UDiscordActivityManager::UpdateActivity(FDiscordActivity NewActivity)
 {
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (GetCore())
 	{
 		auto activity = discord::Activity();
@@ -148,10 +158,12 @@ void UDiscordActivityManager::UpdateActivity(FDiscordActivity NewActivity)
 		
 		GetCore()->ActivityManager().UpdateActivity(activity, UpdateActivityHandler);
 	}
+#endif
 }
 
 void UDiscordActivityManager::ClearActivity()
 {
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (GetCore())
 	{
 		auto UpdateActivityHandler = [&](discord::Result Result)
@@ -166,10 +178,12 @@ void UDiscordActivityManager::ClearActivity()
 		
 		GetCore()->ActivityManager().ClearActivity(UpdateActivityHandler);
 	}
+#endif
 }
 
 void UDiscordActivityManager::SendRequestReply(int64 UserID, TEnumAsByte<FDiscordActivityJoinRequestReply::Type> Reply)
 {
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (GetCore())
 	{
 		auto RequestHandler = [&](discord::Result Result)
@@ -190,10 +204,12 @@ void UDiscordActivityManager::SendRequestReply(int64 UserID, TEnumAsByte<FDiscor
 		
 		GetCore()->ActivityManager().SendRequestReply(UserID, inReply, RequestHandler);
 	}
+#endif
 }
 
 void UDiscordActivityManager::SendInvite(int64 UserID, bool bIsSpectate, const FString& Content)
 {
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (GetCore())
 	{
 		auto RequestHandler = [&](discord::Result Result)
@@ -206,10 +222,12 @@ void UDiscordActivityManager::SendInvite(int64 UserID, bool bIsSpectate, const F
 		
 		GetCore()->ActivityManager().SendInvite(UserID, bIsSpectate ? discord::ActivityActionType::Spectate : discord::ActivityActionType::Join, TCHAR_TO_UTF8(*Content), RequestHandler);
 	}
+#endif
 }
 
 void UDiscordActivityManager::AcceptInvite(int64 UserID)
 {
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (GetCore())
 	{
 		auto RequestHandler = [&](discord::Result Result)
@@ -222,4 +240,5 @@ void UDiscordActivityManager::AcceptInvite(int64 UserID)
 		
 		GetCore()->ActivityManager().AcceptInvite(UserID, RequestHandler);
 	}
+#endif
 }
