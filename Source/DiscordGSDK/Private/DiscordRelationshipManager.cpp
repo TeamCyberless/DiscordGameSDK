@@ -2,7 +2,9 @@
 
 #include "DiscordRelationshipManager.h"
 #include "DiscordCore.h"
-#include "ThirdParty/DiscordGSDKLibrary/Include/core.h"
+#if DISCORD_GAMESDK_DYNAMIC_LIB
+#include "DiscordGSDK/ThirdParty/Discord/core.h"
+#endif
 
 #define LOG_ERROR( Result ) \
 UE_LOG(LogDiscord, Error, TEXT("%s Failed! Error Code: %d"), *FString(__FUNCTION__), static_cast<int32>(Result))
@@ -11,6 +13,7 @@ void UDiscordRelationshipManager::Create(UDiscordCore* InCore)
 {
 	IDiscordInterface::Create(InCore);
 
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	{
 		discord::Event<> OnRelationshipRefreshEvent;
 		auto RelationshipRefreshHandler = [&]()
@@ -56,12 +59,14 @@ void UDiscordRelationshipManager::Create(UDiscordCore* InCore)
     	OnRelationshipUpdateEvent.Connect(RelationshipUpdateHandler);
     	GetCore()->RelationshipManager().OnRelationshipUpdate = OnRelationshipUpdateEvent;
 	}
+#endif
 }
 
 void UDiscordRelationshipManager::Filter(FDiscordRelationshipFilter FilterCallback)
 {
 	if (Core)
 	{
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 		auto RelationshipFilter = [&](discord::Relationship const& Relationship) -> bool
 		{
 			if (!FilterCallback.IsBound())
@@ -99,6 +104,7 @@ void UDiscordRelationshipManager::Filter(FDiscordRelationshipFilter FilterCallba
 		};
 		
 		GetCore()->RelationshipManager().Filter(RelationshipFilter);
+#endif
 	}
 }
 
@@ -106,6 +112,7 @@ bool UDiscordRelationshipManager::Count(int32& Count)
 {
 	if (Core)
 	{
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 		int32_t CountT;
 		const discord::Result Result = GetCore()->RelationshipManager().Count(&CountT);
 		Count = CountT;
@@ -116,6 +123,7 @@ bool UDiscordRelationshipManager::Count(int32& Count)
 		}
 
 		return Result == discord::Result::Ok;
+#endif
 	}
 
 	return false;
@@ -125,6 +133,7 @@ bool UDiscordRelationshipManager::Get(int64 UserID, FDiscordRelationship& Relati
 {
 	if (Core)
 	{
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 		discord::Relationship inRelationship;
 		const discord::Result Result = GetCore()->RelationshipManager().Get(UserID, &inRelationship);
 
@@ -161,6 +170,7 @@ bool UDiscordRelationshipManager::Get(int64 UserID, FDiscordRelationship& Relati
 		}
 
 		return Result == discord::Result::Ok;
+#endif
 	}
 
 	return false;
@@ -170,6 +180,7 @@ bool UDiscordRelationshipManager::GetAt(int32 Index, FDiscordRelationship& Relat
 {
 	if (Core)
 	{
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 		discord::Relationship inRelationship;
 		const discord::Result Result = GetCore()->RelationshipManager().GetAt(Index, &inRelationship);
 
@@ -206,6 +217,7 @@ bool UDiscordRelationshipManager::GetAt(int32 Index, FDiscordRelationship& Relat
 		}
 
 		return Result == discord::Result::Ok;
+#endif
 	}
 
 	return false;

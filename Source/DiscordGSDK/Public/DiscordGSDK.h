@@ -19,6 +19,4 @@ private:
 	/** StartupModule is covered with defines, these functions are the place to put breakpoints. */
 	static bool LoadDependency(const FString& Dir, const FString& Name, void*& Handle);
 	static void FreeDependency(void*& Handle);
-
-	bool HandleSettingsSaved();
 };

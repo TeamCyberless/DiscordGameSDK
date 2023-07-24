@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/DeveloperSettings.h"
 #include "DiscordTypes.h"
 #include "DiscordPluginSettings.generated.h"
 
@@ -11,20 +10,12 @@
  * 
  */
 UCLASS(Config=Game, DefaultConfig, meta = (DisplayName = "Discord Game SDK Settings"))
-class DISCORDGSDK_API UDiscordPluginSettings : public UDeveloperSettings
+class DISCORDGSDK_API UDiscordPluginSettings : public UObject
 {
 	GENERATED_BODY()
 
 public:
 	UDiscordPluginSettings(const FObjectInitializer& ObjectInitializer);
-
-	// UDeveloperSettings overrides
-	virtual FName GetContainerName() const { return FName("Editor"); }
-	virtual FName GetCategoryName() const { return FName("Plugins"); }
-	virtual FName GetSectionName() const { return FName("DiscordGameSDK"); }
-
-	virtual FText GetSectionText() const;
-	virtual FText GetSectionDescription() const;
 	
 	/** This can be obtained from Discord Developer Portal. */
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "General")

@@ -9,13 +9,3 @@ UDiscordPluginSettings::UDiscordPluginSettings(const FObjectInitializer& ObjectI
 	, LogVerbosity(FDiscordLogLevel::DDL_Info)
 	, ReconnectLimit(10)
 { }
-
-FText UDiscordPluginSettings::GetSectionText() const 
-{ 
-	return NSLOCTEXT("DiscordPluginSettings", "DiscordGSDKSettingsName", "Discord Game SDK"); 
-}
-
-FText UDiscordPluginSettings::GetSectionDescription() const
-{
-	return NSLOCTEXT("DiscordPluginSettings", "DiscordGSDKSettingsDescription", "Configure the Discord Game SDK plugin");
-}

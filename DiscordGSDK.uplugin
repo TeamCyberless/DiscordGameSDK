@@ -1,12 +1,12 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
+	"VersionName": "1.2",
 	"FriendlyName": "Discord's GameSDK",
-	"Description": "Unofficial Discord's GameSDK Integration for Unreal Engine 4.",
+	"Description": "Unofficial Discord's GameSDK Integration for Unreal Engine 5.",
 	"Category": "Messaging",
 	"CreatedBy": "TeamCyberless",
-	"CreatedByURL": "https://teamcyberless.net/",
+	"CreatedByURL": "https://teamcyberless.com/",
 	"IsBetaVersion": true,
 	"Installed": true,
 	"Modules": [

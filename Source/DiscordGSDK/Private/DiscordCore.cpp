@@ -5,10 +5,13 @@
 #include "DiscordPluginSettings.h"
 #include "DiscordRelationshipManager.h"
 #include "DiscordUserManager.h"
-#include "ThirdParty/DiscordGSDKLibrary/Include/core.h"
+#if DISCORD_GAMESDK_DYNAMIC_LIB
+#include "DiscordGSDK/ThirdParty/Discord/core.h"
+#endif
 
-void UDiscordCore::Initialize(const bool& bIsDiscordRequired)
+void UDiscordCore::Initialize(bool bIsDiscordRequired)
 {
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (ReconnectCount <= 0)
 	{
 		UE_LOG(LogDiscord, Log, TEXT("Trying to connect with Discord..."));
@@ -43,7 +46,7 @@ void UDiscordCore::Initialize(const bool& bIsDiscordRequired)
 			ReconnectCount++;
 				
 			FTimerHandle UnusedHandle;
-			GetWorld()->GetTimerManager().SetTimer(UnusedHandle, this, &UDiscordCore::BeginPlay, 1, false);
+			GetWorld()->GetTimerManager().SetTimer(UnusedHandle, FTimerDelegate::CreateUObject(this, &UDiscordCore::Initialize, bIsDiscordRequired), 1, false);
 		}
 		else
 		{
@@ -52,22 +55,29 @@ void UDiscordCore::Initialize(const bool& bIsDiscordRequired)
 			MarkAsGarbage();
 		}
 	}
+#else
+	UE_LOG(LogDiscord, Warning, TEXT("DiscordGSDK plugin isn't functioning properly due to missing files."));	
+#endif
 }
 
 void UDiscordCore::BeginDestroy()
 {
 	Super::BeginDestroy();
-	
+
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (Core)
 	{
 		delete Core;
 		Core = nullptr;
 	}
+#endif
 }
 
 void UDiscordCore::Tick(float DeltaTime)
 {
+#if DISCORD_GAMESDK_DYNAMIC_LIB
 	Core->RunCallbacks();
+#endif
 }
 
 bool UDiscordCore::IsTickable() const
