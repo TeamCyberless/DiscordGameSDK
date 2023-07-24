@@ -56,7 +56,7 @@ void UDiscordCore::Initialize(bool bIsDiscordRequired)
 		}
 	}
 #else
-	UE_LOG(LogDiscord, Warning, TEXT("DiscordGameSDK plugin isn't functioning properly due to missing files."));	
+	UE_LOG(LogDiscord, Warning, TEXT("DiscordGSDK plugin isn't functioning properly due to missing files."));	
 #endif
 }
 

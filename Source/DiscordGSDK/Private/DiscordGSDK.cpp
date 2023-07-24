@@ -21,7 +21,7 @@ void FDiscordGSDKModule::StartupModule()
 	const FString LibDir = FPaths::Combine(*SDKDir, TEXT("Win64"));
 	if (!LoadDependency(LibDir, LibName, DiscordGSDKLibraryHandle))
 	{
-		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT(LOCTEXT_NAMESPACE, "Failed to load DiscordGameSDK plugin, Plugin will not be functional."));
+		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT(LOCTEXT_NAMESPACE, "Failed to load DiscordGSDK plugin, Plugin will not be functional."));
 		FreeDependency(DiscordGSDKLibraryHandle);
 	}
 #elif PLATFORM_MAC
@@ -29,7 +29,7 @@ void FDiscordGSDKModule::StartupModule()
 	const FString LibDir = FPaths::Combine(*SDKDir, TEXT("Mac"));
 	if (!LoadDependency(LibDir, LibName, DiscordGSDKLibraryHandle))
 	{
-		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT(LOCTEXT_NAMESPACE, "Failed to load DiscordGameSDK plugin, Plugin will not be functional."));
+		FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT(LOCTEXT_NAMESPACE, "Failed to load DiscordGSDK plugin, Plugin will not be functional."));
 		FreeDependency(DiscordGSDKLibraryHandle);
 	}
 #endif
