@@ -11,12 +11,15 @@
 
 void UDiscordCore::Initialize(bool bIsDiscordRequired)
 {
+<<<<<<< HEAD
 	if (IsRunningDedicatedServer())
 	{
 		// We dont need to initialize Discord Game SDK in dedicated servers
 		return;
 	}
 	
+=======
+>>>>>>> f110e14307b3a40499bc63c6bfdbf9905740f215
 #if DISCORD_GAMESDK_DYNAMIC_LIB
 	if (ReconnectCount <= 0)
 	{

@@ -12,7 +12,11 @@
 	"Modules": [
 		{
 			"Name": "DiscordGSDK",
+<<<<<<< HEAD
 			"Type": "ClientOnly",
+=======
+			"Type": "Runtime",
+>>>>>>> f110e14307b3a40499bc63c6bfdbf9905740f215
 			"LoadingPhase": "PreDefault",
 			"WhitelistPlatforms": [
 				"Win64",
