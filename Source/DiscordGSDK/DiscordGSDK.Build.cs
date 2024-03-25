@@ -2,18 +2,19 @@
 
 using System;
 using System.IO;
-using UnrealBuildTool;
 using EpicGames.Core;
+using UnrealBuildTool;
 
 public class DiscordGSDK : ModuleRules
 {
 	public DiscordGSDK(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		bEnforceIWYU = true;
+		IWYUSupport = IWYUSupport.Full;
 		
 		if (Directory.Exists(Path.Combine(ModuleDirectory, "ThirdParty", "Discord")))
 		{
+			Log.TraceInformation("DiscordGSDK Initalized.");
 			PublicDefinitions.Add(String.Format("DISCORD_GAMESDK_DYNAMIC_LIB={0}", 1));
 
 			PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
@@ -41,6 +42,7 @@ public class DiscordGSDK : ModuleRules
 		}
 		else
 		{
+			Log.TraceError("There is no DiscordGSDK files ({0}).", Path.Combine(ModuleDirectory, "ThirdParty", "Discord"));
 			PublicDefinitions.Add(String.Format("DISCORD_GAMESDK_DYNAMIC_LIB={0}", 0));
 		}
 
