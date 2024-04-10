@@ -33,7 +33,7 @@ void UDiscordCore::Initialize(bool bIsDiscordRequired)
 	if (Result == discord::Result::Ok && Core != nullptr)
 	{
 		UE_LOG(LogDiscord, Log, TEXT("Successfully connected with Discord."));
-		auto LogHook = [=](discord::LogLevel inMinLevel, const char* inLogText)
+		auto LogHook = [this](discord::LogLevel inMinLevel, const char* inLogText)
 		{
 			OnDiscordLogHook.Broadcast(static_cast<FDiscordLogLevel::Type>(inMinLevel), UTF8_TO_TCHAR(inLogText));
 		};
