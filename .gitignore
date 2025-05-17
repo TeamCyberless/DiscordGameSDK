@@ -74,9 +74,5 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 # Redistributable discord files
-Source/ThirdParty/DiscordGSDKLibrary/Linux
-Source/ThirdParty/DiscordGSDKLibrary/Mac
-Source/ThirdParty/DiscordGSDKLibrary/Win64
-Source/ThirdParty/DiscordGSDKLibrary/Win32
-Source/ThirdParty/DiscordGSDKLibrary/Include
-Source/DiscordGSDK/ThirdParty/
+ThirdParty/
+Source/DiscordGSDK/Private/Discord

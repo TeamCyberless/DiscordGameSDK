@@ -6,7 +6,9 @@
 #include "DiscordRelationshipManager.h"
 #include "DiscordUserManager.h"
 #if DISCORD_GAMESDK_DYNAMIC_LIB
-#include "DiscordGSDK/ThirdParty/Discord/core.h"
+THIRD_PARTY_INCLUDES_START
+#include "Discord/core.h"
+THIRD_PARTY_INCLUDES_END
 #endif
 
 void UDiscordCore::Initialize(bool bIsDiscordRequired)
@@ -33,7 +35,7 @@ void UDiscordCore::Initialize(bool bIsDiscordRequired)
 	if (Result == discord::Result::Ok && Core != nullptr)
 	{
 		UE_LOG(LogDiscord, Log, TEXT("Successfully connected with Discord."));
-		auto LogHook = [=](discord::LogLevel inMinLevel, const char* inLogText)
+		auto LogHook = [this](discord::LogLevel inMinLevel, const char* inLogText)
 		{
 			OnDiscordLogHook.Broadcast(static_cast<FDiscordLogLevel::Type>(inMinLevel), UTF8_TO_TCHAR(inLogText));
 		};

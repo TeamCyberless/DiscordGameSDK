@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Modules/ModuleInterface.h"
 
 class FDiscordGSDKModule : public IModuleInterface
 {
@@ -11,6 +12,11 @@ public:
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
+
+#if WITH_EDITOR
+	void OnPostEngineInit();
+	void OnPreExit();
+#endif
 
 private:
 	/** Handle to the test dll we will load. */
