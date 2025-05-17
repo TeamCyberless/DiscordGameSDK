@@ -6,7 +6,9 @@
 #include "DiscordRelationshipManager.h"
 #include "DiscordUserManager.h"
 #if DISCORD_GAMESDK_DYNAMIC_LIB
-#include "DiscordGSDK/ThirdParty/Discord/core.h"
+THIRD_PARTY_INCLUDES_START
+#include "Discord/core.h"
+THIRD_PARTY_INCLUDES_END
 #endif
 
 void UDiscordCore::Initialize(bool bIsDiscordRequired)

@@ -1,27 +1,25 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-using System;
 using System.IO;
-using EpicGames.Core;
+using Microsoft.Extensions.Logging;
 using UnrealBuildTool;
 
 public class DiscordGSDK : ModuleRules
 {
 	public DiscordGSDK(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		IWYUSupport = IWYUSupport.Full;
 		
-		if (Directory.Exists(Path.Combine(ModuleDirectory, "ThirdParty", "Discord")))
+		if (Directory.Exists(Path.Combine(PluginDirectory, "ThirdParty")))
 		{
-			Log.TraceInformation("DiscordGSDK Initalized.");
-			PublicDefinitions.Add(String.Format("DISCORD_GAMESDK_DYNAMIC_LIB={0}", 1));
+			Logger.LogInformation("DiscordGSDK Initalized.");
+			PublicDefinitions.Add("DISCORD_GAMESDK_DYNAMIC_LIB=1");
 
 			PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "Private"));
 			PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
-			PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "ThirdParty",  "Discord"));
 		
-			string BaseDirectory = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", "ThirdParty", "DiscordGSDKLibrary"));
+			string BaseDirectory = Path.GetFullPath(Path.Combine(PluginDirectory, "ThirdParty"));
 
 			if (Target.Platform == UnrealTargetPlatform.Win64)
 			{
@@ -42,27 +40,27 @@ public class DiscordGSDK : ModuleRules
 		}
 		else
 		{
-			Log.TraceError("There is no DiscordGSDK files ({0}).", Path.Combine(ModuleDirectory, "ThirdParty", "Discord"));
-			PublicDefinitions.Add(String.Format("DISCORD_GAMESDK_DYNAMIC_LIB={0}", 0));
+			Logger.LogError("There is no DiscordGSDK files ({0}).", Path.Combine(PluginDirectory, "ThirdParty"));
+			PublicDefinitions.Add("DISCORD_GAMESDK_DYNAMIC_LIB=0");
 		}
 
 		PublicDependencyModuleNames.AddRange(
-			new string[]
-			{
-				"Core"
-			}
+			[
+				"Core", 
+				"CoreUObject",
+				"Engine"
+			]
 			);
 			
 		
 		PrivateDependencyModuleNames.AddRange(
-			new string[]
-			{
+			[
 				"CoreUObject",
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"Projects"	
-			}
-			);
+				"Projects"
+			]
+		);
 	}
 }

@@ -3,11 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
-#if DISCORD_GAMESDK_DYNAMIC_LIB
-#include "types.h"
-#endif
-
+#include "UObject/Interface.h"
 #include "DiscordTypes.generated.h"
 
 namespace discord
